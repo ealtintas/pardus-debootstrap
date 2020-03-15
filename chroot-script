@@ -102,7 +102,7 @@ chrootmirror() {
 
   # LTS support
   case "$RELEASE" in
-    squeeze)
+    onyedi)
       if [ -n "$MIRROR" ] ; then
         echo "Release matching $RELEASE - enabling LTS support in sources.list"
         echo "deb $MIRROR ${RELEASE}-lts $COMPONENTS" >> /etc/apt/sources.list
@@ -110,18 +110,14 @@ chrootmirror() {
       ;;
   esac
 
-  # add security.debian.org:
+  # add Pardus security repo:
   case "$RELEASE" in
-    unstable|sid|lenny) ;;  # no security pool available
-    squeeze|wheezy|jessie|stretch|buster)
-      echo "Adding security.debian.org to sources.list."
-      echo "deb http://security.debian.org ${RELEASE}/updates $COMPONENTS" >> /etc/apt/sources.list
+    onyedi|ondokuz)
+      echo "Adding depo.pardus.org.tr/guvenlik to sources.list.d"
+      echo "deb http://depo.pardus.org.tr/guvenlik ${RELEASE} $COMPONENTS" >> /etc/apt/sources.list.d/guvenlik.list
       ;;
     *)
-      # bullseye and newer releases use a different repository layout, see
-      # https://lists.debian.org/debian-devel-announce/2019/07/msg00004.html
-      echo "Adding security.debian.org/debian-security to sources.list."
-      echo "deb http://security.debian.org/debian-security ${RELEASE}-security $COMPONENTS" >> /etc/apt/sources.list
+      echo "No security pool available for Pardus release: ${RELEASE}" >> /etc/apt/sources.list.d/guvenlik.list
       ;;
   esac
 }
